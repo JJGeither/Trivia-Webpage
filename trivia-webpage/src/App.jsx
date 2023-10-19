@@ -31,18 +31,18 @@ function App() {
     return (
 
         <div className="trivia-app">
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed', top: 0, left: 'calc(50vw - 7%)', width: '14%', height: '12%', backgroundColor: "#283249", zIndex: 999, borderRadius: '10px', backgroundImage: 'linear-gradient(to right, #ff5d6c 50%, #35cdce 50%)', border: '1px solid #000' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', top: 0, left: '50%', width: '300px', height: '150px', marginLeft: '-151px', backgroundColor: "#283249", zIndex: 999, borderRadius: '10px', backgroundImage: 'linear-gradient(to right, #ff5d6c 50%, #35cdce 50%)' }}>
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '0.5rem', backgroundColor: '#000', opacity: 0.3, borderRadius: '0 0 10px 10px' }}></div>
 
-
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'fixed', top: 5, left: 'calc(50vw - 6%)', width: '12%', height: '10%', backgroundColor: "#283249", zIndex: 999, borderRadius: '10px', }}>
-                <div style={{ padding: "1rem" }}>
-                    <img src={logo} alt="logo" className="h-300 w-300" />
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: '1vw', left: '2vw', width: '200px', height: '100px', backgroundColor: "#283249", zIndex: 999, borderRadius: '10px', }}>
+                    <div style={{ padding: "1rem" }}>
+                        <img src={logo} alt="logo" className="h-300 w-300" />
+                    </div>
                 </div>
-            </div>
+
             </div>
 
-            <div className="navbar bg-base-1000 flex items-center justify-center" style={{ height: '5rem', marginTop: '0rem', position: 'relative', overflow: 'hidden', backgroundImage: 'linear-gradient(to right, #ff5d6c 50%, #35cdce 50%)' }}>
+            <div className="navbar bg-base-1000 flex items-center justify-center" style={{ height: '5rem', marginTop: '-150px', position: 'relative', overflow: 'hidden', backgroundImage: 'linear-gradient(to right, #ff5d6c 50%, #35cdce 50%)' }}>
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '0.5rem', backgroundColor: '#000', opacity: 0.3 }}></div>
 
 
@@ -78,8 +78,11 @@ function App() {
                 </div>
             </div>
 
-
-
+            <div className="flex justify-center items-center" style={{ marginTop: '500px'}}>
+                <button style={{ backgroundColor: '#F8C85F', color: '#283249' }} className="px-24 py-6 rounded-full hover:bg-yellow-600">
+                    <span className="font-bold text-xl">Centered Button</span>
+                </button>
+            </div>
 
             <div className="trivia-card">
                 <p className="trivia-question">{question}</p>
@@ -105,6 +108,11 @@ function App() {
             <button className="load-trivia-button" onClick={loadTrivia}>
                 Load New Trivia
             </button>
+
+
+
+
+           
         </div>
     );
 }
