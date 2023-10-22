@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import './App.css';
 import logo from './images/logo-rm.png';
 import profile from './images/profile.jpg';
@@ -36,13 +36,19 @@ function App() {
         setCorrectAnswer('Paris');
     };
 
+    const [selectedTopic, setSelectedTopic] = useState(''); // Initialize the selected topic
+
+    const handleTopicChange = (event) => {
+        setSelectedTopic(event.target.value);
+    };
+
 
     return (
 
         <div className="trivia-app">
 
-            <div className="navbar bg-base-1000 flex items-center justify-center" style={{ height: '5rem', marginTop: '0px', position: 'relative', overflow: 'hidden',  backgroundImage: 'linear-gradient(to right, #ff5d6c 47%, #35cdce 53%)' }}>
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '0.5rem', backgroundColor: '#000', opacity: 0.3 }}></div>
+            <div className="navbar bg-base-1000 flex items-center justify-center" style={{ height: '3rem', marginTop: '0px', position: 'relative', overflow: 'hidden',  backgroundImage: 'linear-gradient(to right, #ff5d6c 47%, #5FAFFF 53%)' }}>
+
 
                 <div className="navbar-start">
                     <div className="dropdown">
@@ -73,6 +79,10 @@ function App() {
                             <span className="badge badge-xs badge-primary indicator-item"></span>
                         </div>
                     </button>
+
+                    <div>
+                    Welcome James!
+                    </div>
                     <div className="avatar">
                         <div className="w-12 rounded-full">
                             <img src={profile} />
@@ -81,24 +91,59 @@ function App() {
                 </div>
             </div>
 
-            <div className="fixed top-40 right-0 h-full w-1/4 p-4">
-                <h2 className="bg-white text-3xl font-bold text-center text-black mb-4">Leaderboard</h2>
+            <div className="absolute stats stats-vertical shadow ml-20 mt-20">
+                <div className="stat">
+                    <div className="stat-title">Questions Answered</div>
+                    <div className="stat-value">31K</div>
+                    <div className="stat-desc">Jan 1st - Feb 1st</div>
+                </div>
+            </div>
+
+            <div className="absolute stats stats-vertical shadow ml-20 mt-80 bg-[#5FAFFF]">
+                <div className="stat">
+                    <div className="stat-title text-white">Percentage Correct</div>
+                    <div className="radial-progress ml-5 mt-3 mb-3 text-white font-bold" style={{ "--value": "70", "--size": "5rem", "--thickness": "10px" }}>70%</div>
+                    <div className="stat-desc text-white">31k / 40k</div>
+                </div>
+            </div>
+
+            <div className="absolute stats stats-vertical shadow ml-20 mt-52 bg-[#ff5d6c] text-white">
+                <div className="stat">
+                    <div className="stat-title text-white">Favorite Category</div>
+                    <div className="stat-value">Fiction</div>
+                </div>
+            </div>
+
+            <div className="absolute top-40 right-10 w-1/4 p-4">
+                <div className="text-center">
+                    <h2 className="text-5xl font-bold text-white p-4 rounded-lg">
+                        Leaderboard
+                    </h2>
+                    <div className="border-b-2 border-white w-100 mb-4 mx-auto"></div>
+                </div>
+
+
                 <div className="space-y-2">
                     {leaderboardData.map((user, index) => (
-                        <div
-                            key={index}
-                            className="flex items-center justify-between"
-                        >
+                        <div key={index} className="flex items-center justify-between">
                             <div
-                                className={`bg-[#ff5d6c] font-bold p-2 border border-[#D1D5DB] w-12 h-12 flex items-center justify-center mr-2 text-black`}
+                                className={`bg-[#ff5d6c] font-bold p-2 rounded-lg border border-[#D1D5DB] w-12 h-12 flex items-center justify-center mr-2 text-white`}
                             >
                                 {index + 1}
                             </div>
-                            <div className={`bg-${index % 2 === 0 ? '[#35cdce]' : '[#F7C75E]'} p-2 border border-[#D1D5DB] flex items-center justify-between flex-1`}>
-                                <span className="text-xl font-bold text-[#283249]">
-                                    {user.name}
-                                </span>
-                                <span className="text-xl font-bold text-[#283249]">
+                            <div
+                                className={`bg-${index % 2 === 0 ? '[#5FAFFF]' : '[#F7C75E]'} p-2 rounded-lg border border-[#D1D5DB] flex items-center justify-between flex-1`}
+                            >
+                                <div className="flex items-center">
+                                    <div className="avatar rounded-full">
+                                        {/* Add the URL of the user's profile picture as the src */}
+                                        <img src={profile} style={{ width: '25px', height: '25px' }} />
+                                    </div>
+                                    <span className="text-xl font-bold text-[#283249] text-center ml-4">
+                                        {user.name}
+                                    </span>
+                                </div>
+                                <span className="text-xl font-bold text-[#283249] text-center">
                                     {user.score}
                                 </span>
                             </div>
@@ -106,10 +151,6 @@ function App() {
                     ))}
                 </div>
             </div>
-
-
-
-
 
             <div className="flex flex-col items-center h-screen mt-80">
                 <div className="flex space-x-2">
@@ -120,7 +161,7 @@ function App() {
                         <div className="h-1 bg-[#e74351] absolute bottom-0 w-full rounded-b-md"></div>
                     </div>
                     <div className="w-20 h-24 relative">
-                        <div className="absolute inset-0 bg-[#35cdce] rounded-md text-white font-retro text-5xl font-bold flex items-center justify-center">
+                        <div className="absolute inset-0 bg-[#5FAFFF] rounded-md text-white font-retro text-5xl font-bold flex items-center justify-center">
                             U
                         </div>
                         <div className="h-1 bg-[#319eb3] absolute bottom-0 w-full rounded-b-md"></div>
@@ -132,15 +173,35 @@ function App() {
                         <div className="h-1 bg-[#e74351] absolute bottom-0 w-full rounded-b-md"></div>
                     </div>
                     <div className="w-20 h-24 relative">
-                        <div className="absolute inset-0 bg-[#35cdce] rounded-md text-white font-retro text-5xl font-bold flex items-center justify-center">
+                        <div className="absolute inset-0 bg-[#5FAFFF] rounded-md text-white font-retro text-5xl font-bold flex items-center justify-center">
                             Z
                         </div>
                         <div className="h-1 bg-[#319eb3] absolute bottom-0 w-full rounded-b-md"></div>
                     </div>
                 </div>
-                <button className="btn btn-lg w-96 h-20 text-4xl mt-10 bg-[#F7C75E]">
-                    Start quiz!
-                </button>
+
+                <div className="flex flex-col items-center">
+                    <button className="btn btn-lg w-120 h-20 text-4xl mt-10 bg-[#F7C75E]">
+                        Start {selectedTopic ? selectedTopic : 'a'} quiz!
+                    </button>
+
+                    <select
+                        className="select mt-5 w-full max-w-xs"
+                        value={selectedTopic}
+                        onChange={handleTopicChange}
+                    >
+                        <option disabled value="">
+                            Pick your topic
+                        </option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="History">History</option>
+                        <option value="Science">Science</option>
+                        <option value="Art">Art</option>
+                        <option value="Sports">Sports</option>
+                    </select>
+                </div>
+
+
             </div>
 
             <div className="trivia-card">
