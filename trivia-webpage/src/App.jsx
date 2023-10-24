@@ -1,9 +1,12 @@
 ﻿import React, { useState } from 'react';
+import { createClient } from "@supabase/supabase-js";
 import './App.css';
 import profile from './images/profile.jpg';
 import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom"; 
 import Quiz from "./Quiz.jsx";
 import Home from "./Home.jsx";
+
+
 
 function App() {
     return (
