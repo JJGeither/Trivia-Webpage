@@ -95,7 +95,6 @@ const Home = () => {
                                 >
                                     <div className="flex items-center">
                                         <div className="avatar rounded-full">
-                                            {/* Add the URL of the user's profile picture as the src */}
                                             <img src={profile} style={{ width: '25px', height: '25px' }} />
                                         </div>
                                         <span className="text-xl font-bold text-[#283249] text-center ml-4">
