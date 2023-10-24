@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@supabase/auth-ui-react": "^0.4.6",
     "@supabase/supabase-js": "^2.38.2",
     "daisyui": "^3.9.3",
     "localforage": "^1.10.0",

@@ -1,14 +1,9 @@
 ﻿import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import './App.css';
 import profile from './images/profile.jpg';
-import Quiz from "./Quiz.jsx";
 
 const Home = () => {
-        const [question, setQuestion] = useState('');
-        const [options, setOptions] = useState([]);
-        const [selectedOption, setSelectedOption] = useState('');
-        const [correctAnswer, setCorrectAnswer] = useState('');
 
         const leaderboardData = [
             { name: 'John', score: 100 },
@@ -16,25 +11,7 @@ const Home = () => {
             { name: 'Bob', score: 90 },
             { name: 'Alice', score: 85 },
             { name: 'Eve', score: 80 },
-        ];
-
-        const handleOptionSelect = (option) => {
-            setSelectedOption(option);
-        };
-
-        const handleAnswerSubmit = () => {
-            if (selectedOption === correctAnswer) {
-                alert('Correct!');
-            } else {
-                alert('Incorrect!');
-            }
-        };
-
-        const loadTrivia = () => {
-            setQuestion('What is the capital of France?');
-            setOptions(['London', 'Berlin', 'Madrid', 'Paris']);
-            setCorrectAnswer('Paris');
-        };
+    ];
 
         const [selectedTopic, setSelectedTopic] = useState(''); // Initialize the selected topic
 

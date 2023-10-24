@@ -1,8 +1,9 @@
 ﻿import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { useNavigate } from "react-router-dom";
+import Home from "./Home.jsx";
 
 const supabase = createClient("https://oxwswcbraxegyjpdkzpm.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94d3N3Y2JyYXhlZ3lqcGRrenBtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5ODAxMDkwMiwiZXhwIjoyMDEzNTg2OTAyfQ.7WMXpuc_gBQpO99zMDVVaUqdEc_ZF7mBP7r8Ir74TL4");
-
 
 function shuffleArray(array) {
     // Fisher-Yates shuffle algorithm
@@ -13,6 +14,8 @@ function shuffleArray(array) {
 }
 
 const Quiz = () => {
+    const navigate = useNavigate();
+
     const [questions, setQuestions] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [points, setPoints] = useState(0);
@@ -23,7 +26,7 @@ const Quiz = () => {
 
     async function loadQuestions() {
         const maxQuestions = 500;
-        const questionCount = 20;
+        const questionCount = 5;
         const questionIndices = [];
 
         while (questionIndices.length < questionCount) {
@@ -67,17 +70,21 @@ const Quiz = () => {
 
     function handleAnswerSelect(answer) {
         // Check if the selected answer is correct
+        var updatedPoints = points;
         if (currentQuestion && currentQuestion.answers.indexOf(answer) === 0) {
             // If correct, add 10 points
-            setPoints(points + 10);
+            updatedPoints = updatedPoints + 10;
+            setPoints(updatedPoints);
+
         }
 
         // Increment the current question index
         if (currentQuestionIndex < questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
         } else {
-            // Handle end of questions (you can show a message or navigate to a different screen)
-            console.log("End of questions. Total Points: " + points);
+            // Handle end of questions
+            console.log("End of questions. Total Points: " + updatedPoints);
+            navigate(`/score#${updatedPoints}`);
         }
     }
 
@@ -100,7 +107,8 @@ const Quiz = () => {
                         {currentQuestion.answers.map((answer, index) => (
                             <button
                                 key={index}
-                                className={`quiz-option bg-[${buttonColors[index]}] text-white text-3xl m-8 btn btn-xl w-96 h-48 font-bold rounded-lg`}
+                                style={{ backgroundColor: buttonColors[index] }}
+                                className="quiz-option text-white text-3xl m-8 btn btn-xl w-96 h-48 font-bold rounded-lg"
                                 onClick={() => handleAnswerSelect(answer)}
                             >
                                 {answer}
