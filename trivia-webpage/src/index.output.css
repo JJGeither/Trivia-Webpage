@@ -1858,16 +1858,16 @@ html {
   right: 2.5rem;
 }
 
-.right-24 {
-  right: 6rem;
+.right-20 {
+  right: 5rem;
 }
 
-.right-64 {
-  right: 16rem;
+.right-32 {
+  right: 8rem;
 }
 
-.right-80 {
-  right: 20rem;
+.right-48 {
+  right: 12rem;
 }
 
 .top-40 {

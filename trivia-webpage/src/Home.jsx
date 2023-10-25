@@ -1,6 +1,6 @@
 ﻿import React, { useState } from 'react';
 import { NavLink } from "react-router-dom";
-import './App.css';
+import './Home.css';
 import profile from './images/profile.jpg';
 
 const Home = () => {
@@ -18,7 +18,6 @@ const Home = () => {
         const handleTopicChange = (event) => {
             setSelectedTopic(event.target.value);
         };
-
 
 
         return (
@@ -87,7 +86,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center h-screen mt-80">
+                <div className="flex flex-col items-center mt-80">
                     <div className="flex space-x-2">
                         <div className="w-20 h-24 relative">
                             <div className="absolute inset-0 bg-[#ff5d6c] rounded-md text-white font-retro text-5xl font-bold flex items-center justify-center">

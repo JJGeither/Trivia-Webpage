@@ -66,13 +66,11 @@ function App() {
 
 
                         <div className="absolute dropdown dropdown-bottom dropdown-end">
-                            <img tabIndex={0} src={profile} className="btn btn-ghost btn-circle avatar" alt="User Profile" />
+                            <img tabIndex={0} src={user.user_metadata?.avatar_url || profile} className="btn btn-ghost btn-circle avatar" alt="User Profile" />
                             <ul tabIndex={0} className="dropdown-content z-[10] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                <NavLink to="/login">
-                                    <li><a>Login</a></li>
-                                    <li><a onClick={() => signOutUser()}>Sign Out</a></li>
-                                </NavLink>
-
+                                {user.email ? <li><a onClick={() => signOutUser()}>Sign Out</a></li>
+                                    :
+                                <li><NavLink to="/login">Login</NavLink></li>}
                             </ul>
                         </div>
 
@@ -92,9 +90,12 @@ function App() {
                             </div>
                         </button>
 
-                        <div className="absolute right-48">
-                            Welcome {user.email}!
-                        </div>
+                        {user.email && (
+                            <div className="absolute right-48">
+                                Welcome, {user.user_metadata?.full_name}!
+                            </div>
+                        )}
+
                     </div>
 
             </div>

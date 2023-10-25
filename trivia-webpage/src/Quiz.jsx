@@ -1,7 +1,6 @@
 ﻿import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
-import Home from "./Home.jsx";
 
 const supabase = createClient("https://oxwswcbraxegyjpdkzpm.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94d3N3Y2JyYXhlZ3lqcGRrenBtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5ODAxMDkwMiwiZXhwIjoyMDEzNTg2OTAyfQ.7WMXpuc_gBQpO99zMDVVaUqdEc_ZF7mBP7r8Ir74TL4");
 
@@ -11,7 +10,9 @@ function shuffleArray(array) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
+    return array; // Return the shuffled array
 }
+
 
 const Quiz = () => {
     const navigate = useNavigate();
@@ -23,6 +24,7 @@ const Quiz = () => {
     useEffect(() => {
         loadQuestions();
     }, []);
+
 
     async function loadQuestions() {
         const maxQuestions = 500;
@@ -53,12 +55,17 @@ const Quiz = () => {
                     data[0].incorrect_answers_2,
                 ].filter((answer) => answer !== null);
 
-                // Shuffle the answers array
-                shuffleArray([correctAnswer, ...incorrectAnswers]);
+
+                const allAnswers = [correctAnswer, ...incorrectAnswers];
+                console.log(allAnswers);
+                shuffleArray(allAnswers);
+                console.log(allAnswers);
+
 
                 loadedQuestions.push({
                     question: data[0].question,
-                    answers: [correctAnswer, ...incorrectAnswers],
+                    answers: allAnswers, // Shuffled answers
+                    correct: correctAnswer,
                 });
             }
         }
@@ -66,16 +73,19 @@ const Quiz = () => {
         setQuestions(loadedQuestions);
     }
 
+
+
+
     const currentQuestion = questions[currentQuestionIndex];
 
     function handleAnswerSelect(answer) {
         // Check if the selected answer is correct
         var updatedPoints = points;
-        if (currentQuestion && currentQuestion.answers.indexOf(answer) === 0) {
+        console.log(currentQuestion.correct);
+        if (currentQuestion && currentQuestion.correct === answer) {
             // If correct, add 10 points
             updatedPoints = updatedPoints + 10;
             setPoints(updatedPoints);
-
         }
 
         // Increment the current question index
@@ -87,6 +97,7 @@ const Quiz = () => {
             navigate(`/score#${updatedPoints}`);
         }
     }
+
 
     // Array of unique colors
     const buttonColors = ['#ff5d6c', '#646CFF', '#D4A548', '#50C878'];
