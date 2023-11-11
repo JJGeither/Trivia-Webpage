@@ -1,9 +1,46 @@
-﻿import React, { useState } from 'react';
+﻿import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import { createClient } from "@supabase/supabase-js";
 import './Home.css';
 import profile from './images/profile.jpg';
 
+const supabase = createClient("https://oxwswcbraxegyjpdkzpm.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94d3N3Y2JyYXhlZ3lqcGRrenBtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY5ODAxMDkwMiwiZXhwIjoyMDEzNTg2OTAyfQ.7WMXpuc_gBQpO99zMDVVaUqdEc_ZF7mBP7r8Ir74TL4");
+
+
 const Home = () => {
+
+    const [data, setData] = useState({});
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        getUserData();
+    }, []);
+
+    async function getUserData() {
+        await supabase.auth.getUser().then((value) => {
+            // value.data.user
+            if (value.data?.user) {
+                console.log(value.data.user);
+                setUser(value.data.user)
+                test(value.data.user.id)
+            }
+        })
+    }
+
+    async function test(id) {
+        const { data } = await supabase
+            .from("profiles")
+            .select()
+            .eq("id", id)
+            .limit(1);
+
+        if (data && data.length > 0) {
+            console.log(data);
+            setData(data)
+        } else {
+            console.log("No data found for the specified id");
+        }
+    }
 
         const leaderboardData = [
             { name: 'John', score: 100 },
@@ -20,6 +57,12 @@ const Home = () => {
         };
 
 
+        const correctQuestions = data?.[0]?.correct_questions || 0;
+        const totalQuestions = data?.[0]?.total_questions || 0;
+        const percentageCorrect = totalQuestions > 0 ? Math.round((correctQuestions / totalQuestions) * 100) : 0;
+
+
+
         return (
 
             <div className="trivia-app">
@@ -27,7 +70,7 @@ const Home = () => {
                 <div className="absolute stats stats-vertical shadow ml-20 top-40">
                     <div className="stat">
                         <div className="stat-title">Questions Answered</div>
-                        <div className="stat-value">31K</div>
+                        <div className="stat-value">{totalQuestions}</div>
                         <div className="stat-desc">Jan 1st - Feb 1st</div>
                     </div>
                 </div>
@@ -42,8 +85,8 @@ const Home = () => {
                 <div className="absolute stats stats-vertical shadow ml-20 top-96 mt-5 bg-[#646CFF]">
                     <div className="stat">
                         <div className="stat-title text-white">Percentage Correct</div>
-                        <div className="radial-progress ml-5 mt-3 mb-3 text-white font-bold" style={{ "--value": "70", "--size": "5rem", "--thickness": "10px" }}>70%</div>
-                        <div className="stat-desc text-white">31k / 40k</div>
+                        <div className="radial-progress ml-5 mt-3 mb-3 text-white font-bold" style={{ "--value": `${percentageCorrect}`, "--size": "5rem", "--thickness": "10px" }}>{percentageCorrect}%</div>
+                        <div className="stat-desc text-white"> {data?.[0]?.correct_questions || 0} /  {data?.[0]?.total_questions || 0}</div>
                     </div>
                 </div>
 
