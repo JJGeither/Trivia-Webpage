@@ -1,3 +1,10 @@
 .trivia-app {
     height: 500px; /* Set your desired fixed height here */
 }
+
+.horizontal-line {
+    margin-top: 10px;
+    width: 500px;
+    height: 2px; 
+    background-color: #FF5733; 
+}

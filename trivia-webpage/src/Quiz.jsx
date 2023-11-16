@@ -37,12 +37,12 @@ const Quiz = () => {
             if (value.data?.user) {
                 console.log(value.data.user);
                 setUser(value.data.user)
-                test(value.data.user.id)
+                getProfile(value.data.user.id)
             }
         })
     }
 
-    async function test(id) {
+    async function getProfile(id) {
         const { data } = await supabase
             .from("profiles")
             .select()
@@ -150,7 +150,6 @@ const Quiz = () => {
 
         <div className="quiz-container text-center flex flex-col justify-center items-center h-screen">
             <img tabIndex={0} src={user.user_metadata?.avatar_url} className="btn btn-ghost btn-circle avatar" alt="User Profile" />
-            <div className="text-white"> TEST: {data?.[0]?.total_questions || 0} </div>
             <h2 className="quiz-question font-bold text-white text-4xl">
                 {currentQuestion ? currentQuestion.question : 'Loading...'}
             </h2>

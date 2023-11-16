@@ -1,8 +1,9 @@
 
 #root {
     width: 100vw;
-    background-color: #2a2c36;
+    background: linear-gradient(#2a2c36, #1F2127);
 }
+
 
 .card {
     padding: 2em;

@@ -55,7 +55,7 @@ function App() {
                             <li><a>About</a></li>
                         </ul>
                         </div>
-                        <NavLink to="/" className="text-3xl ml-20 font-retro whitespace-nowrap">
+                        <NavLink to="/" className="text-4xl ml-60 font-retro whitespace-nowrap">
                             <span className="text-stroke text-white">Trivia Trove</span>
                         </NavLink>
                 </div>
@@ -91,7 +91,7 @@ function App() {
                         </button>
 
                         {user.email && (
-                            <div className="absolute right-48">
+                            <div className="absolute right-48 text-xl">
                                 Welcome, {user.user_metadata?.full_name}!
                             </div>
                         )}
