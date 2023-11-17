@@ -38,8 +38,17 @@ const Quiz = () => {
                 console.log(value.data.user);
                 setUser(value.data.user)
                 getProfile(value.data.user.id)
+                getLeaderboard(value.data.user.id)
             }
         })
+    }
+
+    async function getLeaderboard(id) {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select('id', 'total_points')
+            .order('total_points', { ascending: false })
+            .limit(10)
     }
 
     async function getProfile(id) {

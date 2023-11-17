@@ -11,9 +11,11 @@ const Home = () => {
 
     const [data, setData] = useState({});
     const [user, setUser] = useState({});
+    const [leaderBoard, setLeaderboard] = useState({});
 
     useEffect(() => {
         getUserData();
+        getLeaderboard();
     }, []);
 
     async function getUserData() {
@@ -22,12 +24,12 @@ const Home = () => {
             if (value.data?.user) {
                 console.log(value.data.user);
                 setUser(value.data.user)
-                test(value.data.user.id)
+                getUserInfo(value.data.user.id)
             }
         })
     }
 
-    async function test(id) {
+    async function getUserInfo(id) {
         const { data } = await supabase
             .from("profiles")
             .select()
@@ -41,6 +43,23 @@ const Home = () => {
             console.log("No data found for the specified id");
         }
     }
+
+    async function getLeaderboard() {
+        const { data, error } = await supabase
+            .from('profiles')
+            .select() // Switched the order of attributes
+            .order('total_points', { ascending: false })
+            .limit(10);
+
+        if (error) {
+            console.error('Error fetching leaderboard:', error);
+        } else {
+            setLeaderboard(data); // Set all fetched data
+            console.log(data); // Log all fetched data
+        }
+    }
+
+
 
         const leaderboardData = [
             { name: 'John', score: 100 },
@@ -102,31 +121,36 @@ const Home = () => {
                         <div className="mb-5 h-1 bg-gradient-to-r from-transparent via-white to-transparent"></div>
                     </div>
 
-                    <div className="space-y-2">
-                        {leaderboardData.map((user, index) => (
-                            <div key={index} className="flex items-center justify-end">
-                                <div
-                                    className={`bg-${index % 2 === 0 ? '[#646CFF]' : '[#ff5d6c]'} rounded-lg flex items-center justify-between ${index < 3 ? `border-4` : ''
-                                        } ${index === 0 ? 'border-[#FFD700]' : index === 1 ? 'border-[#C0C0C0]' : 'border-[#CD853F]'}  ${index < 3 ? 'w-full text-xl' : 'w-11/12 text-lg'}`}
-                                >
-                                    <div className={`p-${index < 3 ? '4' : '2'} flex items-center`}>
-                                        <span className="font-bold text-[#283249] text-center mr-4">
-                                            #{index + 1}
-                                        </span>
-                                        <div className="avatar rounded-full">
-                                            <img src={profile} style={{ width: '25px', height: '25px' }} />
+                    {leaderBoard && leaderBoard.length > 0 && (
+                        <div>
+                            <div className="space-y-2">
+                                {leaderBoard.map((user, index) => (
+                                    <div key={index} className="flex items-center justify-end">
+                                        <div
+                                            className={`bg-${index % 2 === 0 ? '[#646CFF]' : '[#ff5d6c]'} rounded-lg flex items-center justify-between ${index < 3 ? `border-4` : ''
+                                                } ${index === 0 ? 'border-[#FFD700]' : index === 1 ? 'border-[#C0C0C0]' : 'border-[#CD853F]'}  ${index < 3 ? 'w-full text-lg' : 'w-11/12 text-m'}`}
+                                        >
+                                            <div className={`p-${index < 3 ? '4' : '2'} flex items-center`}>
+                                                <span className="font-bold text-[#283249] text-center mr-4">
+                                                    #{index + 1}
+                                                </span>
+                                                <div className="avatar rounded-full">
+                                                    <img src={profile} style={{ width: '35px', height: '35px' }} />
+                                                </div>
+                                                <span className="font-bold text-[#283249] text-center ml-4">
+                                                    {user.screen_name}
+                                                </span>
+                                            </div>
+                                            <span className={`${index < 3 ? 'text-2xl' : 'text-xl'} mr-3 font-bold text-[#283249] text-left p-${index < 3 ? '4' : '2'}`}>
+                                                {user.total_points}
+                                            </span>
                                         </div>
-                                        <span className="font-bold text-[#283249] text-center ml-4">
-                                            {user.name}
-                                        </span>
                                     </div>
-                                    <span className={`${index < 3 ? 'text-lg' : 'text-xl'} font-bold text-[#283249] text-center p-${index < 3 ? '4' : '2'}`}>
-                                        {user.score}
-                                    </span>
-                                </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    )}
+
                 </div>
 
 

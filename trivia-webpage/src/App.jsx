@@ -2,7 +2,7 @@
 import { createClient } from "@supabase/supabase-js";
 import './App.css';
 import profile from './images/profile.jpg';
-import { BrowserRouter, Routes, Route, NavLink, useNavigate } from "react-router-dom"; 
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom"; 
 import Quiz from "./Quiz.jsx";
 import Home from "./Home.jsx";
 import Score from "./Score.jsx";
@@ -13,6 +13,7 @@ const supabase = createClient("https://oxwswcbraxegyjpdkzpm.supabase.co",
 
 function App() {
     const [user, setUser] = useState({});
+    const [screenName, setName] = useState('');
 
     useEffect(() => {
         async function getUserData() {
@@ -20,12 +21,64 @@ function App() {
                 // value.data.user
                 if (value.data?.user) {
                     console.log(value.data.user);
-                    setUser(value.data.user)
+                    setUser(value.data.user);
+                    getScreenName(value.data.user.id);
                 }
+
             })
+
         }
         getUserData();
     }, []);
+
+    // Function to update screen name in the profiles table
+    const updateScreenName = async (newName) => {
+        try {
+            const { data, error } = await supabase
+                .from('profiles')
+                .update({ screen_name: newName })
+                .eq('id', user.id)
+                .single();
+
+            if (error) {
+                throw error;
+            }
+
+            console.log('Screen name updated successfully:', data);
+            // Perform necessary actions after updating the screen name
+        } catch (error) {
+            console.error('Error updating screen name:', error.message);
+        }
+    };
+
+    const handleNameChange = () => {
+        const newName = prompt('Enter your new screen name:');
+        if (newName !== null && newName !== '') {
+            updateScreenName(newName);
+        }
+    };
+
+    async function getScreenName(id) {
+        console.log("TEST: " + id)
+        try {
+            const { data, error } = await supabase
+                .from('profiles')
+                .select('screen_name')
+                .eq('id', id)
+                .single();
+
+            if (error) {
+                throw error;
+            }
+
+            console.log('Name retrieved:', data);
+            console.log('Name retrieved:', data.screen_name);
+            setName(data.screen_name || 'John');
+            // Perform necessary actions after updating the screen name
+        } catch (error) {
+            console.error('Error getting name:', error.message);
+        }
+    }
 
     async function signOutUser() {
         const { error } = await supabase.auth.signOut();
@@ -68,10 +121,13 @@ function App() {
                         <div className="absolute dropdown dropdown-bottom dropdown-end">
                             <img tabIndex={0} src={user.user_metadata?.avatar_url || profile} className="btn btn-ghost btn-circle avatar" alt="User Profile" />
                             <ul tabIndex={0} className="dropdown-content z-[10] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                <li><a onClick={handleNameChange} style={{ cursor: 'pointer' }}>Change Screen Name</a></li>
                                 {user.email ? <li><a onClick={() => signOutUser()}>Sign Out</a></li>
                                     :
-                                <li><NavLink to="/login">Login</NavLink></li>}
+                                    <li><NavLink to="/login">Login</NavLink></li>}
+                   
                             </ul>
+
                         </div>
 
                         <button className="absolute right-20 btn btn-ghost btn-circle">
@@ -90,11 +146,10 @@ function App() {
                             </div>
                         </button>
 
-                        {user.email && (
-                            <div className="absolute right-48 text-xl">
-                                Welcome, {user.user_metadata?.full_name}!
-                            </div>
-                        )}
+                        <div className="absolute right-48 text-xl">
+                            {screenName && <span>Welcome, {screenName}!</span>}
+                        </div>
+
 
                     </div>
 
