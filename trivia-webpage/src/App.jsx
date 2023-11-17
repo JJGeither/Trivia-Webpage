@@ -16,6 +16,7 @@ function App() {
     const [screenName, setName] = useState('');
 
     useEffect(() => {
+        console.log('i fire once');
         async function getUserData() {
             await supabase.auth.getUser().then((value) => {
                 // value.data.user
