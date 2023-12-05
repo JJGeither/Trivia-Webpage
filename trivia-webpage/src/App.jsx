@@ -60,7 +60,6 @@ function App() {
     };
 
     async function getScreenName(id) {
-        console.log("TEST: " + id)
         try {
             const { data, error } = await supabase
                 .from('profiles')
@@ -122,7 +121,11 @@ function App() {
                         <div className="absolute dropdown dropdown-bottom dropdown-end">
                             <img tabIndex={0} src={user.user_metadata?.avatar_url || profile} className="btn btn-ghost btn-circle avatar" alt="User Profile" />
                             <ul tabIndex={0} className="dropdown-content z-[10] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                <li><a onClick={handleNameChange} style={{ cursor: 'pointer' }}>Change Screen Name</a></li>
+                                <li>  {user.email && (
+                                    <a onClick={handleNameChange} style={{ cursor: 'pointer' }}>
+                                        Change Screen Name
+                                    </a>
+                                )}</li>
                                 {user.email ? <li><a onClick={() => signOutUser()}>Sign Out</a></li>
                                     :
                                     <li><NavLink to="/login">Login</NavLink></li>}
@@ -157,7 +160,7 @@ function App() {
             </div>
 
                 <Routes>
-                    <Route exact path="/quiz" element={<Quiz />} />
+                    <Route exact path="/quiz/:topic" element={<Quiz />} />
                     <Route exact path="/score" element={<Score />} />
                     <Route exact path="/login" element={<Login />} />
                     <Route exact path="/" element={< Home />} />

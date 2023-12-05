@@ -8,15 +8,31 @@ const supabase = createClient("https://oxwswcbraxegyjpdkzpm.supabase.co", "eyJhb
 
 
 const Home = () => {
-
-    const [data, setData] = useState({});
+    const [favoriteCategory, setFavoriteCategory] = useState(''); // Initialize favorite category
+    const [data, setData] = useState([]);
     const [user, setUser] = useState({});
-    const [leaderBoard, setLeaderboard] = useState({});
+    const [leaderBoard, setLeaderboard] = useState([]);
+
 
     useEffect(() => {
         getUserData();
         getLeaderboard();
+        fetchFavoriteCategory(); // Fetch favorite category when component mounts
     }, []);
+
+    async function fetchFavoriteCategory() {
+        try {
+            const { data, error } = await supabase.rpc('getcategorywithmostquestions');
+
+            if (error) {
+                console.error('Error fetching favorite category:', error);
+            } else {
+                setFavoriteCategory(data); // Set favorite category from the fetched data
+            }
+        } catch (error) {
+            console.error('Error fetching favorite category:', error.message);
+        }
+    }
 
     async function getUserData() {
         await supabase.auth.getUser().then((value) => {
@@ -99,7 +115,7 @@ const Home = () => {
                 <div className="absolute stats stats-vertical shadow ml-20 top-72 bg-[#ff5d6c] text-white">
                     <div className="stat">
                         <div className="stat-title text-white">Favorite Category</div>
-                        <div className="stat-value">Fiction</div>
+                        <div className="stat-value">{favoriteCategory}</div>
                     </div>
                 </div>
 
@@ -187,16 +203,35 @@ const Home = () => {
                     </div>
                     <div className="mt-5 h-1 w-1/3 bg-gradient-to-r from-transparent via-white to-transparent"></div>
 
-
                     <div className="flex flex-col items-center">
-
-                            <NavLink to="/quiz">
+                        {selectedTopic ? (
+                            <NavLink to={`/quiz/${selectedTopic.toLowerCase()}`}>
                                 <button className="btn btn-lg w-120 h-20 text-4xl mt-10 bg-[#F7C75E]">
-                                    Start {selectedTopic ? selectedTopic : 'a'} quiz!
+                                    Start {selectedTopic} quiz!
                                 </button>
                             </NavLink>
+                        ) : (
+                            <button  className="btn btn-lg w-120 h-20 text-4xl mt-10 bg-[#F7C75E] bg-opacity-80 cursor-not-allowed">
+                                Select a Topic
+                            </button>
+                        )}
 
+                        <select
+                            className="select mt-5 w-full max-w-xs"
+                            value={selectedTopic}
+                            onChange={handleTopicChange}
+                        >
+                            <option disabled value="">
+                                Pick your topic
+                            </option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="History">History</option>
+                            <option value="Science">Science</option>
+                            <option value="Geography">Geography</option>
+                            <option value="Misc">Miscellaneous</option>
+                        </select>
                     </div>
+
 
 
                 </div>
